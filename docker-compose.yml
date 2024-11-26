@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=caching_sha2_password
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: open_banking_manning
+      MYSQL_ROOT_HOST: '%'                           # Nombre de usuario (opcional)
+    ports:
+      - "33061:3306"  # Mapea el puerto 3306 del contenedor al puerto 3306 del host
+    volumes:
+      - mysql_data:/var/lib/mysql  # Monta los datos de MySQL en un volumen para persistencia
+
+
+  my-keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak_container
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8081
+      KC_HOSTNAME_STRICT_BACKCHANNEL: "true"
+      KEYCLOAK_ADMIN: admin   
+      KEYCLOAK_ADMIN_PASSWORD: admin   
+      KC_HEALTH_ENABLED: "true"
+      KC_LOG_LEVEL: info
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7080/health/ready"]
+      interval: 15s
+      timeout: 2s
+      retries: 15
+    command: ["start-dev", "--http-port", "8181"]
+    ports:
+      - "8181:8181"
+
+
+
+
+volumes:
+  mysql_data:
