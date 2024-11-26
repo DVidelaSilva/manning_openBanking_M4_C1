@@ -36,10 +36,7 @@ public class RESTTransactionsAPIClient implements TransactionApiClient{
 
     private final OBTransactionAdapter adapter = new OBTransactionAdapter();
 
-    // URL red de prueba
 
-    // private final String oauthUrl = "http://localhost:8080/oauth/token";
-    // private final String transactionsUrl = "http://localhost:8080/accounts/1234567/transactions";
 
     // credenciales
     private final String clientId = "better-banking";
@@ -52,67 +49,6 @@ public class RESTTransactionsAPIClient implements TransactionApiClient{
     }
     
 
-    // Obtencion del Token de Acceso
-
-    // private String getAccessToken() {
-    //     String credentials = clientId + ":" + clientSecret;
-    //     String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
-    //     System.out.println("Encoded Credentials: " + encodedCredentials);
-
-    //     // Solicitud del Token
-    //     String accessToken = client.post()
-    //         .uri(oauthUrl)
-    //         .header(HttpHeaders.AUTHORIZATION, "Basic " + encodedCredentials)
-    //         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    //         .bodyValue("grant_type=client_credentials")
-    //         .retrieve()
-    //         .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), 
-    //                   clientResponse -> {
-    //                       // Log error status if 4xx or 5xx response code is received
-    //                       log.error("Error en la solicitud para obtener el token: HTTP {}", clientResponse.statusCode());
-    //                       return clientResponse.bodyToMono(String.class)
-    //                                            .doOnTerminate(() -> log.error("Respuesta error: {}", clientResponse.statusCode()))
-    //                                            .then(Mono.error(new RuntimeException("Error al obtener el token")));
-    //                   })
-    //         .bodyToMono(OAuthTokenResponse.class)
-    //         .block()
-    //         .getAccessToken();
-
-    //     return accessToken;
-    // }
-
-
-
-    // @Override
-    // public List<Transaction> findAllByAccountNumber(Integer accountNumber) {
-    //     // Obtener el token de acceso
-    //     String accessToken = getAccessToken();
-
-    //     // Si no se obtuvo un token, devolver lista vacía
-    //     if (accessToken == null) {
-    //         log.error("No se pudo obtener el token de acceso.");
-    //         return Collections.emptyList();
-    //     }
-
-
-
-    //     OBReadTransaction6 res = client.get()
-    //         .uri(transactionsUrl, accountNumber)
-    //         .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-    //         .retrieve()
-    //         .bodyToMono(OBReadTransaction6.class)
-    //         .block();
-
-    //         if (res == null || res.getData() == null) {
-    //             return Collections.emptyList();
-    //         }
-
-    //     return res.getData()
-    //             .getTransaction()
-    //             .stream()
-    //             .map(adapter::adapt)
-    //             .collect(toList());
-    // }
 
 
     @Override
